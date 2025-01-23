@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="lv">
 <head>
-<link rel="stylesheet" href="style.css">
-<title>loginss</title>
+  <link rel="stylesheet" href="style.css">
+  <title>Yipii</title>
 </head>
 <body>
-
+  <form action="connect.php" method="POST">
     <div class="container">
-        <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="uname" required>
-       <br><br>
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-    
-        <button type="submit">Login</button>
-        <label>
-          <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label>
-      </div>
+      <h1>Register</h1>
+      <hr>
 
+      <label for="USER"><b>Lietotājvārds</b></label>
+      <input type="text" placeholder="USER" name="USER" id="USER" required>
+      <br><br>
+
+      <label for="PASSWORD"><b>Parole</b></label>
+      <input type="password" placeholder="PASSWORD" name="PASSWORD" id="PASSWORD" required>
+
+      <hr>
+
+      <button type="submit" class="registerbtn">Enter</button>
+    </div>
+
+    <div class="container signin">
+      <p>Already have an account? <a href="login.html">Sign in</a>.</p>
+    </div>
+  </form>
 </body>
 </html>
