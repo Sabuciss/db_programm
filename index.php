@@ -1,27 +1,55 @@
-<form action="connection.php" method="POST">
-    <div class="container">
-        <h1>Login</h1>
-        <hr>
+<?php
+include('connect.php');
 
-        <?php
-        if (isset($_GET['error'])) {
-            echo "<p style='color:red;'>" . htmlspecialchars($_GET['error']) . "</p>";
-        }
-        ?>
+// Check if the form is submitted (POST request)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the input data
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-        <label for="USER"><b>Lietotājvārds</b></label>
-        <input type="text" placeholder="Enter Username" name="USER" id="USER" required>
-        <br><br>
+    // Hash the password before storing it
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        <label for="PASSWORD"><b>Parole</b></label>
-        <input type="password" placeholder="Enter Password" name="PASSWORD" id="PASSWORD" required>
+    // Prepare the SQL query to insert the user data
+    $stmt = $mysqli->prepare("INSERT INTO userss (USER, PASSWORD) VALUES (?, ?)");
+    $stmt->bind_param("ss", $username, $hashed_password);
 
-        <hr>
+    // Execute the query
+    if ($stmt->execute()) {
+        // Start the session and store the username
+        session_start();
+        $_SESSION['username'] = $username;
 
-        <button type="submit" class="Login">Login</button>
-    </div>
+        // Redirect to sveiki.php after successful registration
+        header("Location: sveiki.php");
+        exit();  // Make sure the script stops here and doesn't run the rest of the code
+    } else {
+        // Show error message if insertion fails
+        echo "<p>Error: " . $stmt->error . "</p>";
+    }
 
-    <div class="container signin">
-        <p>Don't have an account? <a href="sveiki.php">Register</a>.</p>
-    </div>
-</form>
+    $stmt->close();
+    $mysqli->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form action="index.php" method="POST">
+        
+       <label for="username">Username</label>
+        <input type="text" name="username" id="username" required autocomplete="username"><br><br> <!-- Added autocomplete="username" -->
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required autocomplete="current-password"><br><br> <!-- Added autocomplete="current-password" -->
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
